@@ -18,8 +18,8 @@
 #include <stdlib.h>
 
 void playred(){
-	//turn on red led
-	//play sound for red
+	//Turn on red led
+	//Play sound for red
 	PORTC = PORTC | 0x01;
 	OCR0A = 0x4D;
 	TCCR0B = 0x05;
@@ -28,7 +28,7 @@ void playred(){
 }
 
 void playblue(){
-	//turn on blue led and play sound for blue
+	//Turn on blue led and play sound for blue
 	PORTC = PORTC | 0x04;
 	OCR0A = 0x26;
 	TCCR0B = 0x05;
@@ -36,7 +36,7 @@ void playblue(){
 }
 
 void playgreen(){
-	//turn on green LED and play sound for green
+	//Turn on green LED and play sound for green
 	PORTC = PORTC | 0x02;
 	OCR0A = 0x19;
 	TCCR0B = 0x05;
@@ -44,7 +44,7 @@ void playgreen(){
 }
 
 void playyellow(){
-	//turn on yellow LED and play sound for yellow
+	//Turn on yellow LED and play sound for yellow
 	PORTC = PORTC | 0x08;
 	OCR0A = 0x0D;
 	TCCR0B = 0x05;
@@ -53,28 +53,28 @@ void playyellow(){
 
 int button() {
 	int ret = -1;
-	if ((PINB & 0x08) != 0) {	//yellow
+	if ((PINB & 0x08) != 0) {	//Yellow
 		playyellow();
 		ret = 0;
 	}
 	else{
 		PORTC = 0x00;
 	}
-	if ((PINB & 0x04) != 0) {		//blue
+	if ((PINB & 0x04) != 0) {		//Blue
 		playblue();
 		ret = 1;
 	}
 	else{
 		PORTC = 0x00;
 	}
-	if ((PINB & 0x02) != 0) {		//green
+	if ((PINB & 0x02) != 0) {		//Green
 		playgreen();
 		ret = 2;
 	}
 	else{
 		PORTC = 0x00;
 	}
-	if ((PINB & 0x01) != 0) {		//red
+	if ((PINB & 0x01) != 0) {		//Red
 		playred();
 		ret = 3;
 	}
@@ -120,7 +120,7 @@ void playwin(){
 }
 
 void playnone(){
-	//turn everything off
+	//Turn everything off
 	PORTC = 0x00;
 	OCR0A = 0x00;
 	TCCR0B = 0x00;
@@ -160,7 +160,7 @@ void playPress(int z){
 		playred();
 	}
 	
-	while(z == button()) {} // wait for button to be released
+	while(z == button()) {} // Wait for button to be released
 	
 	playnone();
 }
@@ -195,6 +195,7 @@ int main(void)
 		
 		last_x = -1;
 		x = -1;
+		//When button is pressed begins the game and locks in value of i to continue the loop
 		while (last_x == x){
 			x = button();
 			i = i + 1;
@@ -202,17 +203,17 @@ int main(void)
 		seed = i;
 		last_x = x;
 		srand(seed);
-		for (int y=0;y<10;y++){
+		for (int y=0;y<10;y++){		//Generates 10 colors to play in sequence
 			seq[y] = (rand()%4);
 		}
 		for(unsigned int A=0; A<64000; A++){
 	}
 		
 		
-		for (int j=1;j<10;j++){			//tracks which loop we're in
+		for (int j=1;j<10;j++){			//Tracks which loop we're in
 			if (a==1){
 				break; }
-			for (int k=0;k<j;k++){			//count number of presses in loop
+			for (int k=0;k<j;k++){			//Count number of presses in loop
 				play(seq[k]);
 				playnone();
 				for(unsigned int b=0; b<64000; b++){
@@ -221,11 +222,11 @@ int main(void)
 			for (g=0;g<j;g++){
 				int result = seq[g];
 				last_x = x;
-				while (last_x == x){ // wait for press
+				while (last_x == x){ // Wait for press
 					x = button();
 				}
 				last_x = x;
-				while (last_x == x){ // wait for release
+				while (last_x == x){ // Wait for release
 					x = button();
 					playPress(x);
 				}
